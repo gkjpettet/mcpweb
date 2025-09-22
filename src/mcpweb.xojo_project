@@ -11,6 +11,7 @@ Class=ToolParameter;MCP/ToolParameter.xojo_code;&h000000006820BFFF;&h00000000157
 Class=ToolArgument;MCP/ToolArgument.xojo_code;&h0000000018ADCFFF;&h000000001571BFFF;false
 Folder=Search Tool;Search Tool;&h0000000020AA1FFF;&h0000000000000000;false
 Class=SearchTool;Search Tool/SearchTool.xojo_code;&h000000007D022FFF;&h0000000020AA1FFF;false
+Class=WebResult;Search Tool/WebResult.xojo_code;&h00000000504567FF;&h0000000020AA1FFF;false
 MajorVersion=1
 MinorVersion=0
 SubVersion=0

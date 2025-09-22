@@ -21,9 +21,13 @@ Inherits MCP.Tool
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 52756E2061207765622073656172636820616761696E7374207468652071756572792E
-		Function Run(args() As MCP.ToolArgument) As JSONItem
-		  /// Run a web search against the query.
+	#tag Method, Flags = &h0, Description = 52756E2061207765622073656172636820616761696E73742074686520717565727920616E642072657475726E73206120666F726D6174746564207465787420726573706F6E73652E20546865207365727665722077696C6C20706C6163652074686973206974656D20617320746865206F6E6C7920656E74727920696E207468652060726573756C742E636F6E74656E7460206172726179206F66207468652072657475726E656420726573706F6E73652E
+		Function Run(args() As MCP.ToolArgument) As String
+		  /// Run a web search against the query and returns a formatted text response.
+		  /// The server will place this item as the only entry in the `result.content` array of 
+		  /// the returned response.
+		  
+		  #Pragma Warning "TODO: Actually implement properly!"
 		  
 		  // Get the arguments and their values.
 		  // The MCP server application will have validated that the arguments passed are valid.
@@ -43,14 +47,45 @@ Inherits MCP.Tool
 		    System.DebugLog("Seach maxLength: " + maxLength.ToString)
 		  End If
 		  
-		  Var summary As String = "Aoife Pettet is a trampolinist, pianist and grammar school student."
+		  Var content1 As String = "ObjoScript is an open source object-oriented scripting language written in Xojo that is designed to be embedded in a Xojo app. it's fast, production-ready and easily extensible."
+		  Var url1 As String = "https://garrypettet.com/projects/objoscript.html"
+		  Var score1 As Double = 0.99
+		  Var result1 As New WebResult(url1, content1, score1)
 		  
-		  Var result As New JSONItem
-		  result.Value("summary") = summary
-		  result.Value("url") = "https://garrypettet.com/info"
-		  result.Value("relevance_score") = 0.95
+		  Var content2 As String = "ObjoScript is a toy programming language inspired by Wren"
+		  Var url2 As String = "https://google.com"
+		  Var score2 As Double = 0.75
+		  Var result2 As New WebResult(url2, content2, score2)
 		  
-		  Return result
+		  Return SummariseResults(result1, result2)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function SummariseResults(ParamArray results() As WebResult) As String
+		  /// Summarises the passed web results into a single string for returning to the LLM.
+		  
+		  Var summary() As String
+		  
+		  If results.Count = 0 Then Return "0 results found."
+		  
+		  If results.Count = 1 Then
+		    summary.Add("1 result found.")
+		  Else
+		    summary.Add(results.Count.ToString + " results found.")
+		  End If
+		  summary.Add(EndOfLine)
+		  
+		  For i As Integer = 0 To results.LastIndex
+		    Var result As WebResult = results(i)
+		    Var index As Integer = i + 1
+		    summary.Add("Result " + index.ToString + ":")
+		    summary.Add(result.ToString)
+		  Next i
+		  
+		  Return String.FromArray(summary, EndOfLine)
 		  
 		End Function
 	#tag EndMethod

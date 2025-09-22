@@ -214,9 +214,10 @@ Inherits ConsoleApplication
 		  
 		  If Verbose Then System.DebugLog("Calling tool: " + toolName)
 		  
-		  Var toolOutput As JSONItem = tool.Run(arguments)
+		  Var toolOutput As String = tool.Run(arguments)
 		  
 		  Return Response(toolOutput)
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -317,9 +318,9 @@ Inherits ConsoleApplication
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 52657475726E732074686520726573756C74206F66206120746F6F6C2063616C6C202877686963682069732061204A534F4E4974656D29207772617070656420696E2061204A534F4E4974656D2E
-		Function Response(toolOutput As JSONItem) As JSONItem
-		  /// Returns the result of a tool call (which is a JSONItem) wrapped in a JSONItem.
+	#tag Method, Flags = &h0, Description = 52657475726E732074686520726573756C74206F66206120746F6F6C2063616C6C20287768696368206973206120737472696E6729207772617070656420696E2061204A534F4E4974656D2E
+		Function Response(toolOutput As String) As JSONItem
+		  /// Returns the result of a tool call (which is a string) wrapped in a JSONItem.
 		  
 		  Var response As New JSONItem
 		  response.Value("jsonrpc") = "2.0"
@@ -327,20 +328,16 @@ Inherits ConsoleApplication
 		  
 		  Var result As New JSONItem
 		  
-		  // Create the content item.
-		  Var content As New JSONItem
+		  // Create the content array.
+		  Var content As New JSONItem("[]")
 		  
-		  #Pragma Warning "FIX: The structure of the returned output is wrong. Do I need to specify the type?"
+		  // Add the tool's text output.
+		  Var textContent As New JSONItem
+		  textContent.Value("type") = "text"
+		  textContent.Value("text") = toolOutput
 		  
-		  ' content.Add(toolOutput)
-		  
-		  ' // Add text content.
-		  ' Var textContent As New JSONItem
-		  ' textContent.Value("type") = "text"
-		  ' textContent.Value("text") = toolOutput
-		  ' 
-		  ' content.Add(textContent)
-		  result.Value("content") = toolOutput
+		  content.Add(textContent)
+		  result.Value("content") = content
 		  
 		  response.Value("result") = result
 		  

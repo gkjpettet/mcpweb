@@ -1,22 +1,25 @@
 #tag Class
-Protected Class SearchTool
+Protected Class KagiSearchTool
 Inherits MCP.Tool
 	#tag Method, Flags = &h0
-		Sub Constructor()
+		Sub Constructor(apiKey As String)
 		  // Pass the superclass this tool's name and description.
 		  Super.Constructor("search", _
-		  "Searches the web and returns text content from the most relevant webpage.")
+		  "Searches the web using the specified search engine and returns text content from the most" + _
+		  " relevant web pages.")
+		  
+		  Self.APIKey = apiKey
 		  
 		  // The `query` parameter is a string.
-		  Var queryParam As New MCP.ToolParameter("query", MCP.ToolParameterTypes.String_, _
+		  Var query As New MCP.ToolParameter("query", MCP.ToolParameterTypes.String_, _
 		  "The web search query.", False, "", True)
-		  Parameters.Add(queryParam)
+		  Parameters.Add(query)
 		  
 		  // `maxLength` is an optional integer specifying the maximum length of the result returned.
-		  Var maxLenParam As New MCP.ToolParameter("maxLength", MCP.ToolParameterTypes.Integer_, _
+		  Var maxLen As New MCP.ToolParameter("maxLength", MCP.ToolParameterTypes.Integer_, _
 		  "The maximum number of characters to return from the web search.", True, DEFAULT_MAX_LENGTH, False)
 		  
-		  Parameters.Add(maxLenParam)
+		  Parameters.Add(maxLen)
 		  
 		End Sub
 	#tag EndMethod
@@ -26,8 +29,6 @@ Inherits MCP.Tool
 		  /// Run a web search against the query and returns a formatted text response.
 		  /// The server will place this item as the only entry in the `result.content` array of 
 		  /// the returned response.
-		  
-		  #Pragma Warning "TODO: Actually implement properly!"
 		  
 		  // Get the arguments and their values.
 		  // The MCP server application will have validated that the arguments passed are valid.
@@ -42,44 +43,44 @@ Inherits MCP.Tool
 		    End Select
 		  Next arg
 		  
+		  Var engine As New Kagi.Search(APIKey)
+		  
 		  If App.Verbose Then
 		    System.DebugLog("Search query: " + query)
 		    System.DebugLog("Seach maxLength: " + maxLength.ToString)
 		  End If
 		  
-		  Var content1 As String = "ObjoScript is an open source object-oriented scripting language written in Xojo that is designed to be embedded in a Xojo app. it's fast, production-ready and easily extensible."
-		  Var url1 As String = "https://garrypettet.com/projects/objoscript.html"
-		  Var score1 As Double = 0.99
-		  Var result1 As New WebResult(url1, content1, score1)
+		  // Perform the search.
+		  Var response As Kagi.SearchResponse = engine.Search(query)
 		  
-		  Var content2 As String = "ObjoScript is a toy programming language inspired by Wren"
-		  Var url2 As String = "https://google.com"
-		  Var score2 As Double = 0.75
-		  Var result2 As New WebResult(url2, content2, score2)
+		  Return SummariseResponse(response)
 		  
-		  Return SummariseResults(result1, result2)
 		  
 		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Function SummariseResults(ParamArray results() As WebResult) As String
-		  /// Summarises the passed web results into a single string for returning to the LLM.
+	#tag Method, Flags = &h1, Description = 53756D6D6172697365732074686520706173736564204B6167692073656172636820726573706F6E736520696E746F20612073696E676C6520737472696E6720666F722072657475726E696E6720746F20746865204C4C4D2E
+		Protected Function SummariseResponse(response As Kagi.SearchResponse) As String
+		  /// Summarises the passed Kagi search response into a single string for returning to the LLM.
 		  
 		  Var summary() As String
 		  
-		  If results.Count = 0 Then Return "0 results found."
+		  If Not response.Success Then
+		    Return "An error occurred whilst performing the search: " + response.ErrorMessage
+		  End If
 		  
-		  If results.Count = 1 Then
+		  If response.Results.Count = 0 Then Return "0 results found."
+		  
+		  If response.Results.Count = 1 Then
 		    summary.Add("1 result found.")
 		  Else
-		    summary.Add(results.Count.ToString + " results found.")
+		    summary.Add(response.Results.Count.ToString + " results found.")
 		  End If
 		  summary.Add(EndOfLine)
 		  
-		  For i As Integer = 0 To results.LastIndex
-		    Var result As WebResult = results(i)
+		  For i As Integer = 0 To response.Results.LastIndex
+		    Var result As Kagi.SearchResult = response.Results(i)
 		    Var index As Integer = i + 1
 		    summary.Add("Result " + index.ToString + ":")
 		    summary.Add(result.ToString)
@@ -89,6 +90,11 @@ Inherits MCP.Tool
 		  
 		End Function
 	#tag EndMethod
+
+
+	#tag Property, Flags = &h0, Description = 596F75204B6167692073656172636820415049206B65792E
+		APIKey As String
+	#tag EndProperty
 
 
 	#tag Constant, Name = DEFAULT_MAX_LENGTH, Type = Double, Dynamic = False, Default = \"5000", Scope = Public
@@ -142,7 +148,7 @@ Inherits MCP.Tool
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

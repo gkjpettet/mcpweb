@@ -26,6 +26,8 @@ Protected Class Tool
 
 	#tag Method, Flags = &h0
 		Sub Constructor(name As String, description As String)
+		  #Pragma BreakOnExceptions False
+		  
 		  If name = "" Then
 		    Raise New InvalidArgumentException("A tool cannot have an empty name.")
 		  Else
@@ -246,7 +248,7 @@ Protected Class Tool
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

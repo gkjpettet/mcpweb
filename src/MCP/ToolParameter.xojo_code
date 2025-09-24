@@ -2,6 +2,8 @@
 Protected Class ToolParameter
 	#tag Method, Flags = &h0
 		Sub Constructor(name As String, type As MCP.ToolParameterTypes, description As String, hasDefault As Boolean, default As Variant, required As Boolean)
+		  #Pragma BreakOnExceptions False
+		  
 		  If name = "" Then
 		    Raise New InvalidArgumentException("A tool parameter must have a name.")
 		  Else
@@ -34,6 +36,8 @@ Protected Class ToolParameter
 	#tag Method, Flags = &h1, Description = 52657475726E7320547275652069662074686520706173736565642076616C756520697320612076616C69642064656661756C742076616C756520666F7220746865207370656369666965642070726F706572747920747970652E
 		Protected Function DefaultValueIsValidType(value As Variant, type As MCP.ToolParameterTypes) As Boolean
 		  /// Returns True if the passeed value is a valid default value for the specified property type.
+		  
+		  #Pragma BreakOnExceptions False
 		  
 		  If value Is Nil And type <> MCP.ToolParameterTypes.Object_ Then
 		    Return False
@@ -185,7 +189,39 @@ Protected Class ToolParameter
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="MCP.ToolParameterTypes"
+			EditorType="Enum"
+			#tag EnumValues
+				"0 - Array_"
+				"1 - Boolean_"
+				"2 - Integer_"
+				"3 - Number_"
+				"4 - Object_"
+				"5 - String_"
+			#tag EndEnumValues
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Description"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="HasDefault"
+			Visible=false
+			Group="Behavior"
+			InitialValue="False"
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Required"
+			Visible=false
+			Group="Behavior"
+			InitialValue="True"
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

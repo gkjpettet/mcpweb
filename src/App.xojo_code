@@ -5,12 +5,40 @@ Inherits MCP.ServerApplication
 		Sub Configure()
 		  Self.Name = "mcpweb"
 		  
-		  RegisterTools(New SearchTool)
+		  Var apiKey As String = CommandLineParser.StringValue("apikey", "")
+		  RegisterTools(New KagiSearchTool(apiKey))
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event , Description = 546865206170706C69636174696F6E2069732061626F757420746F20706172736520616E79206F7074696F6E732070617373656420746F20746865206170706C69636174696F6E2E20596F752073686F756C64207265676973746572206F7074696F6E7320686572652E
+		Sub WillParseOptions()
+		  // Add your command line options here.
+		  
+		  Self.CommandLineParser.AddOption("k", "apikey", "The Kagi API key to use.", _
+		  MCP.OptionTypes.String, True)
+		  
 		End Sub
 	#tag EndEvent
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Verbose"
+			Visible=false
+			Group="Behavior"
+			InitialValue="True"
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

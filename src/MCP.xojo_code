@@ -34,6 +34,8 @@ Protected Module MCP
 		Function ToString(Extends type As MCP.ToolParameterTypes) As String
 		  /// Returns a string representation of a tool parameter type.
 		  
+		  #Pragma BreakOnExceptions False
+		  
 		  Select Case type
 		  Case MCP.ToolParameterTypes.Array_
 		    Return "array"
@@ -82,6 +84,20 @@ Protected Module MCP
 	#tag EndMethod
 
 
+	#tag Note, Name = Credits
+		The command line argument parsing classes (Option, OptionException and OptionParser) are very close
+		ports of Jeremy Cowgar's option parser:
+		
+		https://jcowgar.github.io/xojo-option-parser/
+		
+		The remainder of the MCP implementation was written by Dr Garry Pettet:
+		
+		https://garrypettet.com
+		
+		
+	#tag EndNote
+
+
 	#tag Enum, Name = ErrorTypes, Type = Integer, Flags = &h1
 		InternalError = -32603
 		  InvalidParameters = -32602
@@ -89,6 +105,16 @@ Protected Module MCP
 		  MethodNotFound = -32601
 		  ParseError = -32700
 		ServerError = -32000
+	#tag EndEnum
+
+	#tag Enum, Name = OptionTypes, Flags = &h0
+		String
+		  Integer
+		  Double
+		  DateTime
+		  Boolean
+		  File
+		Directory
 	#tag EndEnum
 
 	#tag Enum, Name = ToolParameterTypes, Type = Integer, Flags = &h1

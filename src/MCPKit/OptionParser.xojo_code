@@ -21,7 +21,7 @@ Protected Class OptionParser
 		    "been added for you")
 		  End If
 		  
-		  Var o As New MCP.Option(shortKey, longKey, description, type, isRequired)
+		  Var o As New MCPKit.Option(shortKey, longKey, description, type, isRequired)
 		  Options.Add(o)
 		  
 		  If o.ShortKey <> "" Then
@@ -65,7 +65,7 @@ Protected Class OptionParser
 		  //
 		  
 		  Var v() As Variant
-		  Var o As MCP.Option = OptionValue(key)
+		  Var o As MCPKit.Option = OptionValue(key)
 		  
 		  If Not (o Is Nil) Then
 		    v = o.Value
@@ -91,7 +91,7 @@ Protected Class OptionParser
 		  // The option type must be that of `OptionTypes.Boolean`.
 		  //
 		  
-		  Var o As MCP.Option = OptionValue(key)
+		  Var o As MCPKit.Option = OptionValue(key)
 		  Return If(o Is Nil Or o.WasSet = False, defaultValue, o.Value.BooleanValue)
 		End Function
 	#tag EndMethod
@@ -210,8 +210,8 @@ Protected Class OptionParser
 		  
 		  Self.AppDescription = appDescription
 		  
-		  AddOption("h", "help", "Show help", MCP.OptionTypes.Boolean)
-		  AddOption("v", "verbose", "Turns on verbose logging mode.", MCP.OptionTypes.Boolean)
+		  AddOption("h", "help", "Show help", MCPKit.OptionTypes.Boolean)
+		  AddOption("v", "verbose", "Turns on verbose logging mode.", MCPKit.OptionTypes.Boolean)
 		End Sub
 	#tag EndMethod
 
@@ -487,7 +487,7 @@ Protected Class OptionParser
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function OptionValue(key As String) As MCP.Option
+		Function OptionValue(key As String) As MCPKit.Option
 		  //
 		  // Retrieve the actual `Option` object associated with the `key`.
 		  //
@@ -617,7 +617,7 @@ Protected Class OptionParser
 		      key = key.Left(equalIdx)
 		    End If
 		    
-		    Var opt As MCP.Option = OptionValue(key)
+		    Var opt As MCPKit.Option = OptionValue(key)
 		    If opt = Nil Then
 		      //
 		      // Maybe the user has specified --no-option which should set a
@@ -631,7 +631,7 @@ Protected Class OptionParser
 		      key = key.Middle(3)
 		      opt = OptionValue(key)
 		      
-		      If opt = Nil Or opt.Type <> MCP.OptionTypes.Boolean Then
+		      If opt = Nil Or opt.Type <> MCPKit.OptionTypes.Boolean Then
 		        RaiseUnrecognizedKeyException(key)
 		      Else
 		        value = "No"
@@ -641,7 +641,7 @@ Protected Class OptionParser
 		    If value <> "" Or hasEquals Then
 		      // We already got the value, ignore everything else in this If
 		      
-		    ElseIf opt.Type = MCP.OptionTypes.Boolean Then
+		    ElseIf opt.Type = MCPKit.OptionTypes.Boolean Then
 		      value = "Yes"
 		      
 		    ElseIf Not Self.HelpRequested Then
@@ -672,7 +672,7 @@ Protected Class OptionParser
 		      Raise New OptionException("Insufficient extras specified")
 		    End If
 		    
-		    For Each o As MCP.Option In Options
+		    For Each o As MCPKit.Option In Options
 		      If Not o.IsValid Then
 		        Var key As String
 		        If o.LongKey <> "" Then
@@ -899,7 +899,7 @@ Protected Class OptionParser
 		    If opt.ShortKey <> "" Then
 		      Var keyString As String = KeyWithDashes(opt.ShortKey)
 		      
-		      If opt.Type <> MCP.OptionTypes.Boolean Then
+		      If opt.Type <> MCPKit.OptionTypes.Boolean Then
 		        keyString = keyString + " " + opt.TypeString
 		      End If
 		      
@@ -909,7 +909,7 @@ Protected Class OptionParser
 		    If opt.LongKey <> "" Then
 		      Var keyString As String = KeyWithDashes(opt.LongKey)
 		      
-		      If opt.Type <> MCP.OptionTypes.Boolean Then
+		      If opt.Type <> MCPKit.OptionTypes.Boolean Then
 		        keyString = keyString + "=" + opt.TypeString
 		      End If
 		      
@@ -974,7 +974,7 @@ Protected Class OptionParser
 		  // The option type must be that of `OptionTypes.String`.
 		  //
 		  
-		  Var o As MCP.Option = OptionValue(key)
+		  Var o As MCPKit.Option = OptionValue(key)
 		  Return If(o Is Nil Or o.WasSet = False Or o.Value Is Nil, defaultValue, o.Value.StringValue)
 		End Function
 	#tag EndMethod
@@ -989,7 +989,7 @@ Protected Class OptionParser
 		  End If
 		  
 		  If v <> Nil Then
-		    Return MCP.Option(v).Value
+		    Return MCPKit.Option(v).Value
 		  End If
 		  
 		  Return Nil
@@ -1193,7 +1193,7 @@ Protected Class OptionParser
 		#tag EndNote
 		#tag Getter
 			Get
-			  Var o As MCP.Option = OptionValue("help")
+			  Var o As MCPKit.Option = OptionValue("help")
 			  If o Is Nil Then
 			    Return False // Should never happen
 			  Else
@@ -1210,7 +1210,7 @@ Protected Class OptionParser
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private Options() As MCP.Option
+		Private Options() As MCPKit.Option
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

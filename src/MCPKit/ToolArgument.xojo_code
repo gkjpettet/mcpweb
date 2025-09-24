@@ -1,7 +1,7 @@
 #tag Class
 Protected Class ToolArgument
 	#tag Method, Flags = &h0
-		Sub Constructor(name As String, type As MCP.ToolParameterTypes, value As Variant)
+		Sub Constructor(name As String, type As MCPKit.ToolParameterTypes, value As Variant)
 		  Self.Name = name
 		  Self.Type = type
 		  Self.Value = value
@@ -15,7 +15,7 @@ Protected Class ToolArgument
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 5468697320617267756D656E74277320747970652E
-		Type As MCP.ToolParameterTypes
+		Type As MCPKit.ToolParameterTypes
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -69,7 +69,15 @@ Protected Class ToolArgument
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Type"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="MCP.ToolParameterTypes"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

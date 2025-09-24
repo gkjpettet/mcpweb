@@ -1,7 +1,7 @@
 #tag Class
 Protected Class ToolParameter
 	#tag Method, Flags = &h0
-		Sub Constructor(name As String, type As MCP.ToolParameterTypes, description As String, hasDefault As Boolean, default As Variant, required As Boolean)
+		Sub Constructor(name As String, type As MCPKit.ToolParameterTypes, description As String, hasDefault As Boolean, default As Variant, required As Boolean)
 		  #Pragma BreakOnExceptions False
 		  
 		  If name = "" Then
@@ -34,32 +34,32 @@ Protected Class ToolParameter
 	#tag EndMethod
 
 	#tag Method, Flags = &h1, Description = 52657475726E7320547275652069662074686520706173736565642076616C756520697320612076616C69642064656661756C742076616C756520666F7220746865207370656369666965642070726F706572747920747970652E
-		Protected Function DefaultValueIsValidType(value As Variant, type As MCP.ToolParameterTypes) As Boolean
+		Protected Function DefaultValueIsValidType(value As Variant, type As MCPKit.ToolParameterTypes) As Boolean
 		  /// Returns True if the passeed value is a valid default value for the specified property type.
 		  
 		  #Pragma BreakOnExceptions False
 		  
-		  If value Is Nil And type <> MCP.ToolParameterTypes.Object_ Then
+		  If value Is Nil And type <> MCPKit.ToolParameterTypes.Object_ Then
 		    Return False
 		  End If
 		  
 		  Select Case type
-		  Case MCP.ToolParameterTypes.Array_
+		  Case MCPKit.ToolParameterTypes.Array_
 		    Return value.IsArray
 		    
-		  Case MCP.ToolParameterTypes.Boolean_
+		  Case MCPKit.ToolParameterTypes.Boolean_
 		    Return value.Type = Variant.TypeBoolean
 		    
-		  Case MCP.ToolParameterTypes.Integer_
+		  Case MCPKit.ToolParameterTypes.Integer_
 		    Return (value.Type = Variant.TypeInt32) Or (value.Type = Variant.TypeInt64)
 		    
-		  Case MCP.ToolParameterTypes.Number_
+		  Case MCPKit.ToolParameterTypes.Number_
 		    Return value.IsNumeric
 		    
-		  Case MCP.ToolParameterTypes.Object_
+		  Case MCPKit.ToolParameterTypes.Object_
 		    Return True
 		    
-		  Case MCP.ToolParameterTypes.String_
+		  Case MCPKit.ToolParameterTypes.String_
 		    Return value.Type = Variant.TypeString
 		    
 		  Else
@@ -91,22 +91,22 @@ Protected Class ToolParameter
 		  /// Returns this parameter's type as a string.
 		  
 		  Select Case Type
-		  Case MCP.ToolParameterTypes.Array_
+		  Case MCPKit.ToolParameterTypes.Array_
 		    Return "array"
 		    
-		  Case MCP.ToolParameterTypes.Boolean_
+		  Case MCPKit.ToolParameterTypes.Boolean_
 		    Return "boolean"
 		    
-		  Case MCP.ToolParameterTypes.Integer_
+		  Case MCPKit.ToolParameterTypes.Integer_
 		    Return "integer"
 		    
-		  Case MCP.ToolParameterTypes.Number_
+		  Case MCPKit.ToolParameterTypes.Number_
 		    Return "number"
 		    
-		  Case MCP.ToolParameterTypes.Object_
+		  Case MCPKit.ToolParameterTypes.Object_
 		    Return "object"
 		    
-		  Case MCP.ToolParameterTypes.String_
+		  Case MCPKit.ToolParameterTypes.String_
 		    Return "string"
 		    
 		  Else
@@ -139,7 +139,7 @@ Protected Class ToolParameter
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 546869732070726F7065727479277320747970652E
-		Type As MCP.ToolParameterTypes
+		Type As MCPKit.ToolParameterTypes
 	#tag EndProperty
 
 

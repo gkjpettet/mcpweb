@@ -1,7 +1,7 @@
 #tag Module
-Protected Module MCP
+Protected Module MCPKit
 	#tag Method, Flags = &h1, Description = 52657475726E7320616E206572726F7220746F2074686520636C69656E74206279206F757470757474696E6720746F207374646F75742E2060696460206D617920626520616E20696E7465676572206F72204E696C2E
-		Protected Sub Error(id As Variant, errorType As MCP.ErrorTypes, errorMessage As String)
+		Protected Sub Error(id As Variant, errorType As MCPKit.ErrorTypes, errorMessage As String)
 		  /// Returns an error to the client by outputting to stdout.
 		  /// `id` may be an integer or Nil.
 		  
@@ -31,54 +31,54 @@ Protected Module MCP
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52657475726E73206120737472696E6720726570726573656E746174696F6E206F66206120746F6F6C20706172616D6574657220747970652E
-		Function ToString(Extends type As MCP.ToolParameterTypes) As String
+		Function ToString(Extends type As MCPKit.ToolParameterTypes) As String
 		  /// Returns a string representation of a tool parameter type.
 		  
 		  #Pragma BreakOnExceptions False
 		  
 		  Select Case type
-		  Case MCP.ToolParameterTypes.Array_
+		  Case MCPKit.ToolParameterTypes.Array_
 		    Return "array"
 		    
-		  Case MCP.ToolParameterTypes.Boolean_
+		  Case MCPKit.ToolParameterTypes.Boolean_
 		    Return "boolean"
 		    
-		  Case MCP.ToolParameterTypes.Integer_
+		  Case MCPKit.ToolParameterTypes.Integer_
 		    Return "integer"
 		    
-		  Case MCP.ToolParameterTypes.Number_
+		  Case MCPKit.ToolParameterTypes.Number_
 		    Return "number"
 		    
-		  Case MCP.ToolParameterTypes.Object_
+		  Case MCPKit.ToolParameterTypes.Object_
 		    Return "object"
 		    
-		  Case MCP.ToolParameterTypes.String_
+		  Case MCPKit.ToolParameterTypes.String_
 		    Return "string"
 		    
 		  Else
-		    Raise New InvalidArgumentException("Unknown MCP.ToolParameterTypes enumeration.")
+		    Raise New InvalidArgumentException("Unknown MCPKit.ToolParameterTypes enumeration.")
 		  End Select
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h1, Description = 52657475726E732074686520706172616D657465722074797065206F6620746865207061737365642076616C75652E
-		Protected Function TypeFromValue(value As Variant) As MCP.ToolParameterTypes
+		Protected Function TypeFromValue(value As Variant) As MCPKit.ToolParameterTypes
 		  /// Returns the parameter type of the passed value.
 		  
-		  If value.IsArray Then Return MCP.ToolParameterTypes.Array_
+		  If value.IsArray Then Return MCPKit.ToolParameterTypes.Array_
 		  
-		  If value.Type = Variant.TypeString Then Return MCP.ToolParameterTypes.String_
+		  If value.Type = Variant.TypeString Then Return MCPKit.ToolParameterTypes.String_
 		  
 		  If value.IsNumeric Then
-		    If MCP.IsInteger(value) Then
-		      Return MCP.ToolParameterTypes.Integer_
+		    If MCPKit.IsInteger(value) Then
+		      Return MCPKit.ToolParameterTypes.Integer_
 		    Else
-		      Return MCP.ToolParameterTypes.Number_
+		      Return MCPKit.ToolParameterTypes.Number_
 		    End If
 		  End If
 		  
 		  // Assume it's an object. This includes `null`.
-		  Return MCP.ToolParameterTypes.Object_
+		  Return MCPKit.ToolParameterTypes.Object_
 		  
 		End Function
 	#tag EndMethod

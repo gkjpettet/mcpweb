@@ -1,6 +1,6 @@
 #tag Class
 Protected Class App
-Inherits MCP.ServerApplication
+Inherits MCPKit.ServerApplication
 	#tag Event , Description = 43616C6C207468697320746F20706572666F726D20616E7920726571756972656420636F6E66696775726174696F6E207374657073206265666F726520746865207365727665722072756E732E2054686973206576656E742069732072616973656420696D6D6564696174656C79206265666F726520746865206052756E282960206576656E742E
 		Sub Configure()
 		  Self.Name = "mcpweb"
@@ -16,7 +16,7 @@ Inherits MCP.ServerApplication
 		  // Add your command line options here.
 		  
 		  Self.CommandLineParser.AddOption("k", "apikey", "The Kagi API key to use.", _
-		  MCP.OptionTypes.String, True)
+		  MCPKit.OptionTypes.String, True)
 		  
 		End Sub
 	#tag EndEvent

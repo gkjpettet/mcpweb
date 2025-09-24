@@ -135,7 +135,7 @@ Protected Class Option
 		    
 		  Case OptionTypes.Directory
 		    If value <> "" Then
-		      newValue = MCP.OptionParser.GetRelativeFolderItem(value)
+		      newValue = MCPKit.OptionParser.GetRelativeFolderItem(value)
 		    End If
 		    
 		  Case OptionTypes.Double
@@ -143,7 +143,7 @@ Protected Class Option
 		    
 		  Case OptionTypes.File
 		    If value <> "" Then
-		      newValue = MCP.OptionParser.GetRelativeFolderItem(value)
+		      newValue = MCPKit.OptionParser.GetRelativeFolderItem(value)
 		    End If
 		    
 		  Case OptionTypes.Integer

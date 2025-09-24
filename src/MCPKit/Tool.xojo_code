@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Tool
 	#tag Method, Flags = &h1, Description = 52657475726E732054727565206966207468652070617373656420706172616D6574657220616E6420617267756D656E742061726520636F6D70617469626C652E
-		Protected Function Compatible(param As MCP.ToolParameter, arg As MCP.ToolArgument) As Boolean
+		Protected Function Compatible(param As MCPKit.ToolParameter, arg As MCPKit.ToolArgument) As Boolean
 		  /// Returns True if the passed parameter and argument are compatible.
 		  
 		  // Names must match.
@@ -11,10 +11,10 @@ Protected Class Tool
 		  If param.Type = arg.Type Then Return True
 		  
 		  // All integers are numbers but not all numbers are integers...
-		  If param.Type = MCP.ToolParameterTypes.Integer_ And arg.Type = MCP.ToolParameterTypes.Number_ Then
+		  If param.Type = MCPKit.ToolParameterTypes.Integer_ And arg.Type = MCPKit.ToolParameterTypes.Number_ Then
 		    Return False
 		  End If
-		  If param.Type = MCP.ToolParameterTypes.Number_ And arg.Type = MCP.ToolParameterTypes.Integer_ Then
+		  If param.Type = MCPKit.ToolParameterTypes.Number_ And arg.Type = MCPKit.ToolParameterTypes.Integer_ Then
 		    Return True
 		  End If
 		  
@@ -44,7 +44,7 @@ Protected Class Tool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52756E73207468697320746F6F6C20616E642072657475726E732074686520726573756C74206173206120737472696E672E20546865207365727665722077696C6C20706C6163652074686973206974656D20617320746865206F6E6C7920656E74727920696E207468652060726573756C742E636F6E74656E7460206172726179206F66207468652072657475726E656420726573706F6E73652E
-		Function Run(args() As MCP.ToolArgument) As String
+		Function Run(args() As MCPKit.ToolArgument) As String
 		  /// Runs this tool and returns the result as a string.
 		  /// The server will place this item as the only entry in the `result.content` array of 
 		  /// the returned response.
@@ -74,7 +74,7 @@ Protected Class Tool
 		  
 		  // Define properties.
 		  Var jsonProperties As New JSONItem
-		  For Each param As MCP.ToolParameter In Parameters
+		  For Each param As MCPKit.ToolParameter In Parameters
 		    If param.Required Then requiredProperties.Add(param.Name)
 		    jsonProperties.Value(param.Name) = param.ToJSONItem
 		  Next param
@@ -93,7 +93,7 @@ Protected Class Tool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 56616C69646174657320746861742074686520617267756D656E747320706173736564206D617463682077686174207468697320746F6F6C20657870656374732E2049662076616C6964207468656E20616E20656D70747920737472696E672069732072657475726E65642C206F74686572776973652077652072657475726E20746865206572726F72206D6573736167652E
-		Function ValidateArguments(arguments() As MCP.ToolArgument) As String
+		Function ValidateArguments(arguments() As MCPKit.ToolArgument) As String
 		  /// Validates that the arguments passed match what this tool expects.
 		  /// If valid then an empty string is returned, otherwise we return the error message.
 		  
@@ -101,8 +101,8 @@ Protected Class Tool
 		  If Parameters.Count = 0 And arguments.Count = 0 Then Return ""
 		  
 		  // How many required and optional properties are there?
-		  Var requiredParams(), optionalParams() As MCP.ToolParameter
-		  For Each param As MCP.ToolParameter In Parameters
+		  Var requiredParams(), optionalParams() As MCPKit.ToolParameter
+		  For Each param As MCPKit.ToolParameter In Parameters
 		    If param.Required Then
 		      requiredParams.Add(param)
 		    Else
@@ -111,16 +111,16 @@ Protected Class Tool
 		  Next param
 		  
 		  // Clone the arguments array because we'll do some popping...
-		  Var tmp() As MCP.ToolArgument
-		  For Each arg As MCP.ToolArgument In arguments
+		  Var tmp() As MCPKit.ToolArgument
+		  For Each arg As MCPKit.ToolArgument In arguments
 		    tmp.Add(arg)
 		  Next arg
 		  
 		  // Check required properties.
 		  For i As Integer = requiredParams.LastIndex DownTo 0
-		    Var param As MCP.ToolParameter = requiredParams(i)
+		    Var param As MCPKit.ToolParameter = requiredParams(i)
 		    For j As Integer = tmp.LastIndex DownTo 0
-		      Var arg As MCP.ToolArgument = tmp(j)
+		      Var arg As MCPKit.ToolArgument = tmp(j)
 		      
 		      If param.Name = arg.Name And Not Compatible(param, arg) Then
 		        Return "Wrong parameter type for parameter named `" + param.Name + "`. Expected " + _
@@ -139,7 +139,7 @@ Protected Class Tool
 		    Return "Missing the required `" + requiredParams(0).Name + "` parameter."
 		  ElseIf requiredParams.Count > 0 Then
 		    Var missing() As String
-		    For Each rp As MCP.ToolParameter In requiredParams
+		    For Each rp As MCPKit.ToolParameter In requiredParams
 		      missing.Add(rp.Name)
 		    Next rp
 		    Return "Missing multiple required parameters (" + String.FromArray(missing, ", ") + ")."
@@ -147,9 +147,9 @@ Protected Class Tool
 		  
 		  // Check optional properties.
 		  For i As Integer = optionalParams.LastIndex DownTo 0
-		    Var param As MCP.ToolParameter = optionalParams(i)
+		    Var param As MCPKit.ToolParameter = optionalParams(i)
 		    For j As Integer = tmp.LastIndex DownTo 0
-		      Var arg As MCP.ToolArgument = tmp(j)
+		      Var arg As MCPKit.ToolArgument = tmp(j)
 		      
 		      If param.Name = arg.Name And Not Compatible(param, arg) Then
 		        Return "Wrong parameter type for parameter named `" + param.Name + "`. Expected " + _
@@ -167,7 +167,7 @@ Protected Class Tool
 		  // Make sure we haven't been passed too many parameters.
 		  If tmp.Count > 0 Then
 		    Var extra() As String
-		    For Each arg As MCP.ToolArgument In tmp
+		    For Each arg As MCPKit.ToolArgument In tmp
 		      extra.Add("`" + arg.Name + "`")
 		    Next arg
 		    Return "Unexpected parameters (" + String.FromArray(extra, ", ") + ") passed to `" + Self.Name + "` tool."
@@ -189,7 +189,7 @@ Protected Class Tool
 	#tag EndProperty
 
 	#tag Property, Flags = &h1, Description = 5468697320746F6F6C27732070726F706572746965732E
-		Protected Parameters() As MCP.ToolParameter
+		Protected Parameters() As MCPKit.ToolParameter
 	#tag EndProperty
 
 

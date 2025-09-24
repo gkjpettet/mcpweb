@@ -3,14 +3,14 @@ Protected Class ServerApplication
 Inherits ConsoleApplication
 	#tag Event
 		Function Run(args() as String) As Integer
-		  CommandLineParser = New MCP.OptionParser("")
+		  CommandLineParser = New MCPKit.OptionParser("")
 		  
 		  WillParseOptions
 		  
 		  Try
 		    CommandLineParser.Parse(args)
 		  Catch e As RuntimeException
-		    MCP.Error(Nil, MCP.ErrorTypes.ServerError, "Error parsing command line arguments: " + e.Message)
+		    MCPKit.Error(Nil, MCPKit.ErrorTypes.ServerError, "Error parsing command line arguments: " + e.Message)
 		    System.DebugLog("Error parsing command line arguments: " + e.Message)
 		    Exit
 		  End Try
@@ -41,7 +41,7 @@ Inherits ConsoleApplication
 		        If request.HasKey("method") = False Or _
 		          request.Value("method").StringValue.BeginsWith("notifications/") = False Then
 		          // Not a notification so much be an error.
-		          MCP.Error(Nil, MCP.ErrorTypes.InvalidRequest, "Missing `id` in request.")
+		          MCPKit.Error(Nil, MCPKit.ErrorTypes.InvalidRequest, "Missing `id` in request.")
 		          System.DebugLog("Missing `id` in request.")
 		          Exit
 		        End If
@@ -62,11 +62,11 @@ Inherits ConsoleApplication
 		      
 		    Catch e As JSONException
 		      
-		      MCP.Error(RequestID, MCP.ErrorTypes.ParseError, "JSON parsing error: " + e.Message)
+		      MCPKit.Error(RequestID, MCPKit.ErrorTypes.ParseError, "JSON parsing error: " + e.Message)
 		      
 		    Catch e As RuntimeException
 		      
-		      MCP.Error(RequestID, MCP.ErrorTypes.ServerError, "Unexpected runtime exception: " + e.Message)
+		      MCPKit.Error(RequestID, MCPKit.ErrorTypes.ServerError, "Unexpected runtime exception: " + e.Message)
 		      System.DebugLog("Error: " + e.Message)
 		    End Try
 		  Wend
@@ -76,16 +76,16 @@ Inherits ConsoleApplication
 
 
 	#tag Method, Flags = &h1, Description = 54616B657320616E2060617267756D656E747360204A534F4E4974656D2066726F6D206120746F6F6C2063616C6C20616E6420636F6E766572747320697420746F20616E206172726179206F6620546F6F6C50726F706572747920696E7374616E6365732E204D617920726169736520616E20496E76616C6964417267756D656E74457863657074696F6E20736F2074686973206D6574686F642073686F756C64206265207772617070656420696E20612054727920626C6F636B2E
-		Protected Function ArgumentsFromJSONItem(argumentsJSON As JSONItem) As MCP.ToolArgument()
+		Protected Function ArgumentsFromJSONItem(argumentsJSON As JSONItem) As MCPKit.ToolArgument()
 		  /// Takes an `arguments` JSONItem from a tool call and converts it to an array of ToolArgument
 		  /// instances.
 		  /// May raise an InvalidArgumentException so this method should be wrapped in a Try block.
 		  
-		  Var args() As MCP.ToolArgument
+		  Var args() As MCPKit.ToolArgument
 		  For Each key As String In argumentsJSON.Keys
 		    Var value As Variant = argumentsJSON.Value(key)
-		    Var type As MCP.ToolParameterTypes = TypeFromValue(value)
-		    args.Add(New MCP.ToolArgument(key, type, value))
+		    Var type As MCPKit.ToolParameterTypes = TypeFromValue(value)
+		    args.Add(New MCPKit.ToolArgument(key, type, value))
 		  Next key
 		  
 		  Return args
@@ -94,10 +94,10 @@ Inherits ConsoleApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52657475726E7320746865207265676973746572656420746F6F6C20776974682074686520737065636966696564206E616D65206F72204E696C20696620697420646F65736E27742065786973742E
-		Function GetToolNamed(toolName As String) As MCP.Tool
+		Function GetToolNamed(toolName As String) As MCPKit.Tool
 		  /// Returns the registered tool with the specified name or Nil if it doesn't exist.
 		  
-		  For Each tool As MCP.Tool In mTools
+		  For Each tool As MCPKit.Tool In mTools
 		    If tool.Name = toolName Then
 		      Return tool
 		    End If
@@ -188,7 +188,7 @@ Inherits ConsoleApplication
 		  
 		  If Not request.HasKey("params") Then
 		    Var message As String = "Missing `params` key in request."
-		    MCP.Error(RequestID, MCP.ErrorTypes.InvalidRequest, message)
+		    MCPKit.Error(RequestID, MCPKit.ErrorTypes.InvalidRequest, message)
 		    If Verbose Then System.DebugLog(message)
 		    Return Nil
 		  End If
@@ -198,22 +198,22 @@ Inherits ConsoleApplication
 		  Var toolName As String = params.Value("name")
 		  If Not HasToolWithName(toolName) Then
 		    Var message As String = "There is no tool named `" + toolName + "`."
-		    MCP.Error(RequestID, MCP.ErrorTypes.MethodNotFound, message)
+		    MCPKit.Error(RequestID, MCPKit.ErrorTypes.MethodNotFound, message)
 		    If Verbose Then System.DebugLog(message)
 		    Return Nil
 		  End If
-		  Var tool As MCP.Tool = GetToolNamed(toolName)
+		  Var tool As MCPKit.Tool = GetToolNamed(toolName)
 		  
 		  // Get the arguments to the tool.
 		  Var argumentsJSON As JSONItem = params.Value("arguments")
 		  
 		  // Convert the arguments from a JSONItem to an array of ToolArgument instances.
-		  Var arguments() As MCP.ToolArgument
+		  Var arguments() As MCPKit.ToolArgument
 		  Try
 		    arguments = ArgumentsFromJSONItem(argumentsJSON)
 		  Catch e As RuntimeException
 		    Var message As String = "Invalid parameters passed."
-		    MCP.Error(RequestID, MCP.ErrorTypes.InvalidParameters, message)
+		    MCPKit.Error(RequestID, MCPKit.ErrorTypes.InvalidParameters, message)
 		    If Verbose Then System.DebugLog(message)
 		    Return Nil
 		  End Try
@@ -221,7 +221,7 @@ Inherits ConsoleApplication
 		  // Validate that the arguments passed are what the tool expects.
 		  Var argValidationMessage As String = tool.ValidateArguments(arguments)
 		  If argValidationMessage <> "" Then
-		    MCP.Error(RequestID, MCP.ErrorTypes.InvalidParameters, argValidationMessage)
+		    MCPKit.Error(RequestID, MCPKit.ErrorTypes.InvalidParameters, argValidationMessage)
 		    If Verbose Then System.DebugLog(argValidationMessage)
 		    Return Nil
 		  End If
@@ -251,7 +251,7 @@ Inherits ConsoleApplication
 		  
 		  // Create the tools array.
 		  Var tools As New JSONItem("[]")  // Start with an empty array.
-		  For Each tool As MCP.Tool In mTools
+		  For Each tool As MCPKit.Tool In mTools
 		    tools.Add(tool.ToJSONItem)
 		  Next tool
 		  
@@ -270,7 +270,7 @@ Inherits ConsoleApplication
 		Function HasToolWithName(toolName As String) As Boolean
 		  /// Returns True if this server has a tool registered with `toolName`.
 		  
-		  For Each tool As MCP.Tool In mTools
+		  For Each tool As MCPKit.Tool In mTools
 		    If tool.Name = toolName Then Return True
 		  Next tool
 		  
@@ -287,7 +287,7 @@ Inherits ConsoleApplication
 		  /// If an error occurs then it is pushed to stdout and logged and Nil is returned.
 		  
 		  If Not request.HasKey("method") Then
-		    MCP.Error(RequestID, MCP.ErrorTypes.InvalidRequest, "Missing `method` key in JSON request.")
+		    MCPKit.Error(RequestID, MCPKit.ErrorTypes.InvalidRequest, "Missing `method` key in JSON request.")
 		    System.DebugLog("Missing `method` key in JSON request.")
 		    Return Nil
 		  End If
@@ -312,7 +312,7 @@ Inherits ConsoleApplication
 		      Return Nil // No need to provide a response from this server.
 		    End If
 		    
-		    MCP.Error(RequestID, MCP.ErrorTypes.MethodNotFound, "Method not found: " + method)
+		    MCPKit.Error(RequestID, MCPKit.ErrorTypes.MethodNotFound, "Method not found: " + method)
 		    Return Nil
 		  End Select
 		  
@@ -320,12 +320,12 @@ Inherits ConsoleApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h1, Description = 5265676973746572732074686520746F6F6C732070726F76696465642062792074686973204D4350207365727665722E204561636820746F6F6C20696E2060746F6F6C73602073686F756C6420626520616E20696E7374616E6365206F6620616E20604D43502E546F6F6C6020737562636C6173732E
-		Protected Sub RegisterTools(ParamArray tools() As MCP.Tool)
+		Protected Sub RegisterTools(ParamArray tools() As MCPKit.Tool)
 		  /// Registers the tools provided by this MCP server.
-		  /// Each tool in `tools` should be an instance of an `MCP.Tool` subclass.
+		  /// Each tool in `tools` should be an instance of an `MCPKit.Tool` subclass.
 		  
 		  // Make sure each tool is unique.
-		  For Each tool As MCP.Tool In tools
+		  For Each tool As MCPKit.Tool In tools
 		    mTools.Add(tool)
 		  Next tool
 		  
@@ -375,11 +375,11 @@ Inherits ConsoleApplication
 
 
 	#tag Property, Flags = &h0
-		CommandLineParser As MCP.OptionParser
+		CommandLineParser As MCPKit.OptionParser
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected mTools() As MCP.Tool
+		Protected mTools() As MCPKit.Tool
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 546865206E616D65206F662074686973207365727665722E

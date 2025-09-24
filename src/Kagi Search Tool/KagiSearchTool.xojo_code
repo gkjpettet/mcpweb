@@ -1,6 +1,6 @@
 #tag Class
 Protected Class KagiSearchTool
-Inherits MCP.Tool
+Inherits MCPKit.Tool
 	#tag Method, Flags = &h0
 		Sub Constructor(apiKey As String)
 		  // Pass the superclass this tool's name and description.
@@ -11,12 +11,12 @@ Inherits MCP.Tool
 		  Self.APIKey = apiKey
 		  
 		  // The `query` parameter is a string.
-		  Var query As New MCP.ToolParameter("query", MCP.ToolParameterTypes.String_, _
+		  Var query As New MCPKit.ToolParameter("query", MCPKit.ToolParameterTypes.String_, _
 		  "The web search query.", False, "", True)
 		  Parameters.Add(query)
 		  
 		  // `maxLength` is an optional integer specifying the maximum length of the result returned.
-		  Var maxLen As New MCP.ToolParameter("maxLength", MCP.ToolParameterTypes.Integer_, _
+		  Var maxLen As New MCPKit.ToolParameter("maxLength", MCPKit.ToolParameterTypes.Integer_, _
 		  "The maximum number of characters to return from the web search.", True, DEFAULT_MAX_LENGTH, False)
 		  
 		  Parameters.Add(maxLen)
@@ -25,7 +25,7 @@ Inherits MCP.Tool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52756E2061207765622073656172636820616761696E73742074686520717565727920616E642072657475726E73206120666F726D6174746564207465787420726573706F6E73652E20546865207365727665722077696C6C20706C6163652074686973206974656D20617320746865206F6E6C7920656E74727920696E207468652060726573756C742E636F6E74656E7460206172726179206F66207468652072657475726E656420726573706F6E73652E
-		Function Run(args() As MCP.ToolArgument) As String
+		Function Run(args() As MCPKit.ToolArgument) As String
 		  /// Run a web search against the query and returns a formatted text response.
 		  /// The server will place this item as the only entry in the `result.content` array of 
 		  /// the returned response.
@@ -34,7 +34,7 @@ Inherits MCP.Tool
 		  // The MCP server application will have validated that the arguments passed are valid.
 		  Var query As String
 		  Var maxLength As Integer = DEFAULT_MAX_LENGTH
-		  For Each arg As MCP.ToolArgument In args
+		  For Each arg As MCPKit.ToolArgument In args
 		    Select Case arg.Name
 		    Case "query"
 		      query = arg.Value.StringValue

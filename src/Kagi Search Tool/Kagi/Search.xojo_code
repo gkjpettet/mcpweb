@@ -65,7 +65,7 @@ Protected Class Search
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 506572666F726D20612073656172636820776974682074686520676976656E2071756572792E
-		Function Search(query As String, limit As Integer = Kagi.DEFAULT_LIMIT) As Kagi.SearchResponse
+		Function PerformSearch(query As String, limit As Integer = Kagi.DEFAULT_LIMIT) As Kagi.SearchResponse
 		  /// Performs a search with the given query.
 		  
 		  // Handle an empty query.
@@ -162,6 +162,14 @@ Protected Class Search
 			Group="Behavior"
 			InitialValue="30"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="APIKey"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

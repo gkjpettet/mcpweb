@@ -51,7 +51,7 @@ Inherits MCPKit.Tool
 		  End If
 		  
 		  // Perform the search.
-		  Var response As Kagi.SearchResponse = engine.Search(query)
+		  Var response As Kagi.SearchResponse = engine.PerformSearch(query)
 		  
 		  Return SummariseResponse(response)
 		  
@@ -149,6 +149,14 @@ Inherits MCPKit.Tool
 			InitialValue=""
 			Type="String"
 			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="APIKey"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

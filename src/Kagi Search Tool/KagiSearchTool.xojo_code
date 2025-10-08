@@ -47,7 +47,7 @@ Inherits MCPKit.Tool
 		  
 		  If App.Verbose Then
 		    System.DebugLog("Search query: " + query)
-		    System.DebugLog("Seach maxLength: " + maxLength.ToString)
+		    System.DebugLog("Search maxLength: " + maxLength.ToString)
 		  End If
 		  
 		  // Perform the search.
@@ -156,7 +156,7 @@ Inherits MCPKit.Tool
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

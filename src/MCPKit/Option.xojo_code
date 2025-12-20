@@ -633,14 +633,6 @@ Protected Class Option
 			Type="String"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Type"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="OptionTypes"
-			EditorType=""
-		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

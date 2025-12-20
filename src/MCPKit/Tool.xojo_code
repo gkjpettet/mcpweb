@@ -43,11 +43,14 @@ Protected Class Tool
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 52756E73207468697320746F6F6C20616E642072657475726E732074686520726573756C74206173206120737472696E672E20546865207365727665722077696C6C20706C6163652074686973206974656D20617320746865206F6E6C7920656E74727920696E207468652060726573756C742E636F6E74656E7460206172726179206F66207468652072657475726E656420726573706F6E73652E
-		Function Run(args() As MCPKit.ToolArgument) As String
-		  /// Runs this tool and returns the result as a string.
-		  /// The server will place this item as the only entry in the `result.content` array of 
-		  /// the returned response.
+	#tag Method, Flags = &h0, Description = 52756E73207468697320746F6F6C20616E642072657475726E732074686520726573756C742E205573652060546F6F6C526573756C742E53756363657373286F757470757429602C2060546F6F6C526573756C742E4661696C757265286572726F724D65737361676529602C206F7220746865206064697265637420636F6E7374727563746F722E
+		Function Run(args() As MCPKit.ToolArgument) As MCPKit.ToolResult
+		  /// Runs this tool and returns the result.
+		  /// Use `ToolResult.Success(output)`, `ToolResult.Failure(errorMessage)`, or the direct constructor.
+		  ///
+		  /// Example:
+		  ///   Return MCPKit.ToolResult.Success("Operation completed")
+		  ///   Return MCPKit.ToolResult.Failure("Could not access resource")
 		  
 		  #Pragma Unused args
 		  

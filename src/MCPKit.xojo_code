@@ -103,7 +103,7 @@ Protected Module MCPKit
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected VERSION_MAJOR As Integer = 1
+		Protected VERSION_MAJOR As Integer = 2
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

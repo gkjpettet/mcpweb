@@ -25,7 +25,7 @@ Inherits MCPKit.Tool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52756E2061207765622073656172636820616761696E73742074686520717565727920616E642072657475726E73206120666F726D6174746564207465787420726573706F6E73652E20546865207365727665722077696C6C20706C6163652074686973206974656D20617320746865206F6E6C7920656E74727920696E207468652060726573756C742E636F6E74656E7460206172726179206F66207468652072657475726E656420726573706F6E73652E
-		Function Run(args() As MCPKit.ToolArgument) As String
+		Function Run(args() As MCPKit.ToolArgument) As MCPKit.ToolResult
 		  /// Run a web search against the query and returns a formatted text response.
 		  /// The server will place this item as the only entry in the `result.content` array of 
 		  /// the returned response.
@@ -53,7 +53,7 @@ Inherits MCPKit.Tool
 		  // Perform the search.
 		  Var response As Kagi.SearchResponse = engine.PerformSearch(query)
 		  
-		  Return SummariseResponse(response)
+		  Return New MCPKit.ToolResult(SummariseResponse(response))
 		  
 		  
 		  
